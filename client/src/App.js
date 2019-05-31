@@ -1,72 +1,103 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+
 import './App.css';
+import { cards } from './cards.js';
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
 
-function App() {
-  import React, { Component } from 'react';
-  import './App.css';
 
-  class App extends Component {
-    // Initialize state
-    state = { passwords: [] }
+const title = "Black and White Cards";
 
-    // Fetch passwords after first mount
-    componentDidMount() {
-      this.getPasswords();
+
+const description = ["The purpose of these cards is to jog the creative mindset. Sometimes we get stuck in the way we think about thing, the hope is that in considering something tangential, we get a different view of the problem at home. These were developed from interviews during the Stanford class Beyond Pink and Blue, and thus have a specific focus on gender in tech."]
+
+async function loadCards() {
+  console.log('loading cards...');
+  try {
+    const client = await pool.connect()
+    const result = await client.query('SELECT * FROM cards');
+    const results = { 'results': (result) ? result.rows : null};
+    console.log(results);
+    console.log('NO ERRORS IN DB CONNECTION')
+    client.release();
+  } catch(err) {
+    console.log('DB ERROR')
+    console.log(err);
+  }
+}
+
+
+class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state ={
+      cardsActive: false,
+      counter: 0,
+      card: cards[Math.floor(Math.random() * cards.length)],
     }
-
-    getPasswords = () => {
-      // Get the passwords and store them in state
-      fetch('/api/passwords')
-        .then(res => res.json())
-        .then(passwords => this.setState({ passwords }));
-    }
-
-    render() {
-      const { passwords } = this.state;
-
-      return (
-        <div className="App">
-          {/* Render the passwords if we have them */}
-          {passwords.length ? (
-            <div>
-              <h1>5 Passwords.</h1>
-              <ul className="passwords">
-                {/*
-                  Generally it's bad to use "index" as a key.
-                  It's ok for this example because there will always
-                  be the same number of passwords, and they never
-                  change positions in the array.
-                */}
-                {passwords.map((password, index) =>
-                  <li key={index}>
-                    {password}
-                  </li>
-                )}
-              </ul>
-              <button
-                className="more"
-                onClick={this.getPasswords}>
-                Get More
-              </button>
-            </div>
-          ) : (
-            // Render a helpful message otherwise
-            <div>
-              <h1>No passwords :(</h1>
-              <button
-                className="more"
-                onClick={this.getPasswords}>
-                Try Again?
-              </button>
-            </div>
-          )}
-        </div>
-      );
-    }
+    this.selectCard = this.selectCard.bind(this);
   }
 
-  export default App;
+  componentDidMount(){
+    loadCards();
+  }
+
+  selectCard(){
+    const card = Math.floor(Math.random() * cards.length)
+    this.setState({
+      card: cards[card],
+    });
+    console.log('Cleckied')
+  }
+
+  renderCards(){
+    return (<div className="CardContainer"
+    >
+    <div className="Card"
+      onClick={() => this.setState({
+        card: cards[Math.floor(Math.random() * cards.length)],
+      })}
+      >{this.state.card}</div>
+  </div>)
+}
+
+getCard(){
+  return description.map((item) => {
+    return (<p key={item} className="Description">{item}</p>)
+  });
+}
+
+render() {
+  if(this.state.cardsActive){
+    return (
+      <div className="App">
+        <div className="Container">
+          {this.renderCards()}
+        </div>
+      </div>
+    )
+  }
+  return (
+    <div className="App">
+      <div className="Container">
+        <h1 className="Header"
+          >
+          {title}
+        </h1>
+        <div>
+          {this.getCard()}
+        </div>
+        <div className="ButtonContainer">
+          <button className="Button" onClick={() => this.setState({cardsActive: true,})}>The Cards</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 }
 
 export default App;
