@@ -1,7 +1,5 @@
 const express = require('express');
 const path = require('path');
-const generatePassword = require('password-generator');
-
 
 const app = express();
 
@@ -10,14 +8,10 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Put all API endpoints under '/api'
 app.get('/api/passwords', (req, res) => {
-  const count = 5;
-  // Generate some passwords
-  const passwords = Array.from(Array(count).keys()).map(i =>
-    generatePassword(12, false)
-  )
+  const count = 2;
 
   // Return them as json
-  res.json(passwords);
+  res.json(["Hello", "World"]);
 
   console.log(`Sent ${count} cards`);
 });
