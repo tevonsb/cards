@@ -1,5 +1,10 @@
 const express = require('express');
 const path = require('path');
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
 
 const app = express();
 
@@ -16,6 +21,18 @@ app.get('/api/passwords', (req, res) => {
   console.log(`Sent ${count} cards`);
 });
 
+app.get('/db', async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('SELECT * FROM test_table');
+      const results = { 'results': (result) ? result.rows : null};
+      res.render('pages/db', results );
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  })
 
 
 // The "catchall" handler: for any request that doesn't
