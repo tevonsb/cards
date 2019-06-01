@@ -38,8 +38,12 @@ class AddCard extends Component {
       categories: this.state.categories.split(','),
       designations: this.state.categories.split(','),
     }
-    this.addCard(card).then(() => {
+    this.addCard(card).then((res) => {
       this.props.updateCards();
+      console.log('response from add card was');
+      console.log(res)
+    }).catch((err) => {
+      console.log(err);
     });
     this.props.deactivate();
     event.preventDefault();

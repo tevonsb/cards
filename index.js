@@ -8,7 +8,7 @@ const pool = new Pool({
 });
 
 const app = express();
-let additionalCard = {"id":null,"front":"test front","back":"test back","categories":["categories"],"designations":["designations"]};
+let additionalCard = {"id":null,"front":"test front local","back":"test back local","categories":["categories"],"designations":["designations"]};
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -47,15 +47,17 @@ app.post('/addCard', async (req, res) => {
   console.log(req.body);
   if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
     additionalCard = req.body.card;
+    res.status(200).send();
   } else {
     let card = req.body.card
     try {
       const test = await pool.query('INSERT INTO cards (id, front, back, categories, designations) VALUES (uuid_generate_v4(), '+ card['front'] + ',' +card['back']+ ',' +card['categories']+ ',' +card['designations']+ ')');
+      res.status(200).send();
     } catch(err){
       console.log(error);
+      res.status(200).send(error);
     }
   }
-  res.status(200).send();
 });
 
 
