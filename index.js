@@ -55,6 +55,7 @@ app.post('/addCard', async (req, res) => {
       });
       res.status(200).send();
     } catch(err){
+      console.log('catching error in catch statement.')
       console.log(error);
       res.status(200).send(error);
     }
