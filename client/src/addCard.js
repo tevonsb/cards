@@ -15,6 +15,7 @@ class AddCard extends Component {
   }
 
   async addCard(card){
+    console.log('About to send request to addCard');
     await fetch('/addCard', {
       method: 'POST',
       headers: {

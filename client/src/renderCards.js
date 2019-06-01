@@ -10,7 +10,7 @@ class RenderCards extends Component {
     }
     this.selectCard = this.selectCard.bind(this);
     this.nextCard = this.nextCard.bind(this);
-    console.log(this.state.cards);
+    console.log(this.props.cards);
   }
 
   selectCard(){

@@ -10,24 +10,17 @@ const pool = new Pool({
 const app = express();
 let additionalCard = {"id":null,"front":"test front local","back":"test back local","categories":["categories"],"designations":["designations"]};
 
+let additionalCard2 = {"id":null,"front":"test front local Two","back":"test back local Two","categories":["categories"],"designations":["designations"]};
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use(express.json());
-// Put all API endpoints under '/api'
-app.get('/api/passwords', (req, res) => {
-  const count = 2;
-
-  // Return them as json
-  res.json();
-
-  console.log(`Sent ${count} cards`);
-});
 
 app.get('/db', async (req, res) => {
   console.log(process.env.environment);
   if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
-    res.json({"results":[additionalCard]});
+    res.json({"results":[additionalCard, additionalCard2]});
   } else {
     try {
       const client = await pool.connect()
@@ -49,9 +42,11 @@ app.post('/addCard', async (req, res) => {
     additionalCard = req.body.card;
     res.status(200).send();
   } else {
-    let card = req.body.card
+    console.log('Getting into the else');
+    let card = req.body.card;
     try {
       const test = await pool.query('INSERT INTO cards (id, front, back, categories, designations) VALUES (uuid_generate_v4(), '+ card['front'] + ',' +card['back']+ ',' +card['categories']+ ',' +card['designations']+ ')');
+      console.log(test);
       res.status(200).send();
     } catch(err){
       console.log(error);
