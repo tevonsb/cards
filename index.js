@@ -12,6 +12,7 @@ const app = express();
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+app.use(express.json());
 // Put all API endpoints under '/api'
 app.get('/api/passwords', (req, res) => {
   const count = 2;
@@ -42,7 +43,8 @@ app.get('/db', async (req, res) => {
 
   app.post('/addCard', async (req, res) => {
     console.log('Called adding card with');
-    console.log(req);
+    console.log(req.body);
+    res.status(200).send();
   });
 
 

@@ -3,35 +3,78 @@ import React, { Component } from 'react';
 class AddCard extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      front: '',
+      back: '',
+      categories: '',
+      designations: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addCard = this.addCard.bind(this);
   }
 
-  addCard(){
-    let sentCard = "Test";
-    fetch('/addCad', {
+  addCard(card){
+    fetch('/addCard', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        card: sentCard,
+        card: card,
       })
     })
   }
 
-  this.handleChange()
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    let card = {
+      front: this.state.front,
+      back: this.state.back,
+      categories: this.state.categories.split(','),
+      designations: this.state.categories.split(','),
+    }
+    this.addCard(card);
+    this.props.deactivate()
+    event.preventDefault();
+  }
 
   render(){
     return (
       <form onSubmit={this.handleSubmit}>
       <label>
-      Name:
-      <input type="text" value={this.state.value} onChange={(value) => this.setState({value: value})} />
+      Front:
+      <input type="text" value={this.state.value} onChange={(e) => this.setState({
+        front: e.target.value
+      })} />
       </label>
+      <label>
+      Back:
+      <input type="text" value={this.state.value} onChange={(e) => this.setState({
+        back: e.target.value
+      })} />
+      </label>
+      <label>
+      Categories:
+      <input type="text" value={this.state.value} onChange={(e) => this.setState({
+        categories: e.target.value
+      })} />
+      </label>
+      <label>
+      Designations:
+      <input type="text" value={this.state.value} onChange={(e) => this.setState({
+        designations: e.target.value
+      })} />
+      </label>
+      <div>{this.state.value}</div>
       <input type="submit" value="Submit" />
       </form>
     );
   }
 
-
 }
+export default AddCard;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 import { cards } from './cards.js';
-
+import AddCard from './addCard.js';
 
 const title = "Black and White Cards";
 
@@ -32,6 +32,7 @@ class App extends Component {
       addCardActive: false,
     }
     this.selectCard = this.selectCard.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount(){
@@ -63,9 +64,18 @@ getCard(){
   });
 }
 
+// handleClick(){
+//   console.log('Hanlde click');
+//   this.setState({
+//     addCardActive
+//   })
+// }
+
 render() {
   if(this.state.addCardActive){
-
+    return (
+    <AddCard deactivate={() => this.setState({addCardActive: false})}></AddCard>
+  );
   }
   if(this.state.cardsActive){
     return (
@@ -79,7 +89,7 @@ render() {
   }
   return (
     <div className="App">
-      <button onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
+      <button onClick={() => this.setState({addCardActive: true})}>Add Card</button>
       <div className="Container">
         <h1 className="Header"
           >
