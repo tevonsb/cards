@@ -11,15 +11,13 @@ const description = ["The purpose of these cards is to jog the creative mindset.
 
 async function loadCards() {
   console.log('loading cards...');
-  getPasswords = () => {
-    // Get the passwords and store them in state
-    fetch('/db')
-      .then(res => {
-        let result = res.json();
-        console.log(result);
-        console.log('returned from db');
-      );
-  }
+  // Get the passwords and store them in state
+  fetch('/db')
+  .then(res => {
+    let result = res.json();
+    console.log(result);
+    console.log('returned from db');
+  });
 }
 
 
