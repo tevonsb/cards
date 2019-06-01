@@ -45,8 +45,10 @@ app.post('/addCard', async (req, res) => {
     console.log('Getting into the else');
     let card = req.body.card;
     try {
-      const test = await pool.query('INSERT INTO cards (id, front, back, categories, designations) VALUES (uuid_generate_v4(), '+ card['front'] + ',' +card['back']+ ',' +card['categories']+ ',' +card['designations']+ ')');
-      console.log(test);
+      pool.query('INSERT INTO cards (id, front, back, categories, designations) VALUES (uuid_generate_v4(), '+ card['front'] + ',' +card['back']+ ',' +card['categories']+ ',' +card['designations']+ ')').catch((err) => {
+        console.log('error was');
+        console.log(err);
+      });
       res.status(200).send();
     } catch(err){
       console.log(error);
