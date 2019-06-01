@@ -11,16 +11,14 @@ const description = ["The purpose of these cards is to jog the creative mindset.
 
 async function loadCards() {
   console.log('loading cards...');
-  try {
-    const client = await pool.connect()
-    const result = await client.query('SELECT * FROM cards');
-    const results = { 'results': (result) ? result.rows : null};
-    console.log(results);
-    console.log('NO ERRORS IN DB CONNECTION')
-    client.release();
-  } catch(err) {
-    console.log('DB ERROR')
-    console.log(err);
+  getPasswords = () => {
+    // Get the passwords and store them in state
+    fetch('/db')
+      .then(res => {
+        let result = res.json();
+        console.log(result);
+        console.log('returned from db');
+      );
   }
 }
 
