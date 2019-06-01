@@ -49,11 +49,11 @@ app.post('/addCard', async (req, res) => {
       //   console.log('error was');
       //   console.log(err);
       // });
-      // pool.query('INSERT INTO cardsjson (id, card) VALUES (generate_uuid_v4(), \"'+json.stringify(card)+ '\"').catch((err) => {
+      // pool.query('INSERT INTO cardsjson (id, card) VALUES (generate_uuid_v4(), \"'+json.stringify(card)+ '\")').catch((err) => {
       //   console.log('error was');
       //   console.log(err);
       // });
-      pool.query('INSERT INTO cardsjson (id, card) VALUES (1, \"'+json.stringify(card)+ '\")').catch((err) => {
+      pool.query('INSERT INTO cardsjson (id, card) VALUES (1, \"test text\")').catch((err) => {
         console.log('error was');
         console.log(err);
       });
