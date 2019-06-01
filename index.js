@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { Pool } = require('pg');
+require('dotenv').config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true
@@ -16,23 +17,33 @@ app.get('/api/passwords', (req, res) => {
   const count = 2;
 
   // Return them as json
-  res.json(["Hello", "World"]);
+  res.json();
 
   console.log(`Sent ${count} cards`);
 });
 
 app.get('/db', async (req, res) => {
-    try {
-      const client = await pool.connect()
-      const result = await client.query('SELECT * FROM cards');
-      const results = { 'results': (result) ? result.rows : null};
-      res.json(results);
-      client.release();
-    } catch (err) {
-      console.error(err);
-      res.send("Error " + err);
+  console.log(process.env.environment);
+    if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
+      res.json({"results":[{"id":null,"front":"test front","back":"test back","categories":["categories"],"designations":["designations"]}]});
+    } else {
+      try {
+        const client = await pool.connect()
+        const result = await client.query('SELECT * FROM cards');
+        const results = { 'results': (result) ? result.rows : null};
+        res.json(results);
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
     }
   })
+
+  app.post('/addCard', async (req, res) => {
+    console.log('Called adding card with');
+    console.log(req);
+  });
 
 
 // The "catchall" handler: for any request that doesn't

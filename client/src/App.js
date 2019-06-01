@@ -29,6 +29,7 @@ class App extends Component {
       cardsActive: false,
       counter: 0,
       card: cards[Math.floor(Math.random() * cards.length)],
+      addCardActive: false,
     }
     this.selectCard = this.selectCard.bind(this);
   }
@@ -63,9 +64,13 @@ getCard(){
 }
 
 render() {
+  if(this.state.addCardActive){
+
+  }
   if(this.state.cardsActive){
     return (
       <div className="App">
+        <button onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
         <div className="Container">
           {this.renderCards()}
         </div>
@@ -74,6 +79,7 @@ render() {
   }
   return (
     <div className="App">
+      <button onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
       <div className="Container">
         <h1 className="Header"
           >
