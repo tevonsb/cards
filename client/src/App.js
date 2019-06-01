@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { cards } from './cards.js';
 import AddCard from './addCard.js';
+import RenderCards from './renderCards';
 
 const title = "Black and White Cards";
 
@@ -12,11 +13,12 @@ const description = ["The purpose of these cards is to jog the creative mindset.
 async function loadCards() {
   console.log('loading cards...');
   // Get the passwords and store them in state
-  fetch('/db')
+  return fetch('/db')
   .then(res => {
-    let result = res.json();
-    console.log(result);
-    console.log('returned from db');
+    return res.json();
+  }).then((toReturn) => {
+    console.log(toReturn);
+    return toReturn['results']
   });
 }
 
@@ -26,85 +28,82 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state ={
+      cards: [],
       cardsActive: false,
       counter: 0,
       card: cards[Math.floor(Math.random() * cards.length)],
       addCardActive: false,
     }
-    this.selectCard = this.selectCard.bind(this);
     // this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount(){
-    loadCards();
+    loadCards().then((result) => {
+      console.log("RETURNING");
+      console.log(result);
+      this.setState({
+        cards: result,
+      })
+    })
   }
 
-  selectCard(){
-    const card = Math.floor(Math.random() * cards.length)
-    this.setState({
-      card: cards[card],
+  // handleClick(){
+  //   console.log('Hanlde click');
+  //   this.setState({
+  //     addCardActive
+  //   })
+  // }
+
+  getCard(){
+    return description.map((item) => {
+      return (<p key={item} className="Description">{item}</p>)
     });
-    console.log('Cleckied')
   }
 
-  renderCards(){
-    return (<div className="CardContainer"
-    >
-    <div className="Card"
-      onClick={() => this.setState({
-        card: cards[Math.floor(Math.random() * cards.length)],
-      })}
-      >{this.state.card}</div>
-  </div>)
-}
-
-getCard(){
-  return description.map((item) => {
-    return (<p key={item} className="Description">{item}</p>)
-  });
-}
-
-// handleClick(){
-//   console.log('Hanlde click');
-//   this.setState({
-//     addCardActive
-//   })
-// }
-
-render() {
-  if(this.state.addCardActive){
-    return (
-    <AddCard deactivate={() => this.setState({addCardActive: false})}></AddCard>
-  );
-  }
-  if(this.state.cardsActive){
+  render() {
+    if(this.state.addCardActive){
+      return (
+        <AddCard
+          deactivate={() => {this.setState({addCardActive: false})}}
+          updateCards={() => {
+            loadCards().then((result) => {
+              console.log("RETURNING");
+              console.log(result);
+              this.setState({
+                cards: result,
+              })
+            })
+          }}></AddCard>
+      );
+    }
+    if(this.state.cardsActive){
+      return (
+        <div className="App">
+          <button className="Button" onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
+          <div className="Container">
+            <RenderCards cards={this.state.cards}></RenderCards>
+          </div>
+        </div>
+      )
+    }
     return (
       <div className="App">
-        <button onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
+        <button className="Button"  onClick={() => this.setState({addCardActive: true})}>Add Card</button>
         <div className="Container">
-          {this.renderCards()}
+          <h1 className="Header"
+            >
+            {title}
+          </h1>
+          <div>
+            {this.getCard()}
+          </div>
+          <div className="ButtonContainer">
+            <button className="Button" onClick={() => this.setState({cardsActive: true,})}>The Cards</button>
+          </div>
         </div>
       </div>
-    )
+    );
   }
-  return (
-    <div className="App">
-      <button onClick={() => this.setState({addCardActive: true})}>Add Card</button>
-      <div className="Container">
-        <h1 className="Header"
-          >
-          {title}
-        </h1>
-        <div>
-          {this.getCard()}
-        </div>
-        <div className="ButtonContainer">
-          <button className="Button" onClick={() => this.setState({cardsActive: true,})}>The Cards</button>
-        </div>
-      </div>
-    </div>
-  );
-}
 }
 
 export default App;

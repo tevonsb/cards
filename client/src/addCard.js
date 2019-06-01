@@ -14,8 +14,8 @@ class AddCard extends Component {
     this.addCard = this.addCard.bind(this);
   }
 
-  addCard(card){
-    fetch('/addCard', {
+  async addCard(card){
+    await fetch('/addCard', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -38,8 +38,10 @@ class AddCard extends Component {
       categories: this.state.categories.split(','),
       designations: this.state.categories.split(','),
     }
-    this.addCard(card);
-    this.props.deactivate()
+    this.addCard(card).then(() => {
+      this.props.updateCards();
+    });
+    this.props.deactivate();
     event.preventDefault();
   }
 

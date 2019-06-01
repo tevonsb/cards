@@ -8,6 +8,7 @@ const pool = new Pool({
 });
 
 const app = express();
+let additionalCard = {"id":null,"front":"test front","back":"test back","categories":["categories"],"designations":["designations"]};
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -25,27 +26,37 @@ app.get('/api/passwords', (req, res) => {
 
 app.get('/db', async (req, res) => {
   console.log(process.env.environment);
-    if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
-      res.json({"results":[{"id":null,"front":"test front","back":"test back","categories":["categories"],"designations":["designations"]}]});
-    } else {
-      try {
-        const client = await pool.connect()
-        const result = await client.query('SELECT * FROM cards');
-        const results = { 'results': (result) ? result.rows : null};
-        res.json(results);
-        client.release();
-      } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-      }
+  if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
+    res.json({"results":[additionalCard]});
+  } else {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('SELECT * FROM cards');
+      const results = { 'results': (result) ? result.rows : null};
+      res.json(results);
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
     }
-  })
+  }
+})
 
-  app.post('/addCard', async (req, res) => {
-    console.log('Called adding card with');
-    console.log(req.body);
-    res.status(200).send();
-  });
+app.post('/addCard', async (req, res) => {
+  console.log('Called adding card with');
+  console.log(req.body);
+  if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
+    additionalCard = req.body.card;
+  } else {
+    let card = req.body.card
+    try {
+      const test = await pool.query('INSERT INTO cards (id, front, back, categories, designations) VALUES (uuid_generate_v4(), '+ card['front'] + ',' +card['back']+ ',' +card['categories']+ ',' +card['designations']+ ')');
+    } catch(err){
+      console.log(error);
+    }
+  }
+  res.status(200).send();
+});
 
 
 // The "catchall" handler: for any request that doesn't
