@@ -53,7 +53,7 @@ app.post('/addCard', async (req, res) => {
       //   console.log('error was');
       //   console.log(err);
       // });
-      pool.query('INSERT INTO cardsjson VALUES (1, \"test text\")').catch((err) => {
+      pool.query('INSERT INTO cardsjson VALUES (generate_uuid_v4(),'+ '\'+json.stringify(card)\''+')').catch((err) => {
         console.log('error was');
         console.log(err);
       });
