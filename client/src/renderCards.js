@@ -29,6 +29,9 @@ class RenderCards extends Component {
   getCategories(){
     console.log('categories');
     console.log(this.state.card.categories);
+    if(this.state.card.categories < 1){
+      return;
+    }
     return _.map(Object.keys(this.state.card.categories), (category) => {
       return (<button
         onClick={(e) => this.handleCategoryClick(e, category)}

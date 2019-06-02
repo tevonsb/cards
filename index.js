@@ -77,7 +77,7 @@ app.post('/updateCard', async (req, res) => {
     console.log('Getting into the else');
     let card = req.body.card;
     try {
-      pool.query('UPDATE cardsjson SET card =\''+JSON.stringify(card)+'\' WHERE id = \''+card.id+'\'').catch((err) => {
+      pool.query('UPDATE cardsjson SET card =\''+JSON.stringify(card)+'\' WHERE id = \''+card['id']+'\'').catch((err) => {
         console.log('error was');
         console.log(err);
       });
