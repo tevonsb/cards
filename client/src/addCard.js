@@ -9,11 +9,12 @@ class AddCard extends Component {
       front: '',
       back: '',
       categories: '',
-      designations: '',
+      designations: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addCard = this.addCard.bind(this);
+    this.handleCheckBox = this.handleCheckBox.bind(this);
   }
 
   async addCard(card){
@@ -43,7 +44,7 @@ class AddCard extends Component {
       front: this.state.front,
       back: this.state.back,
       categories: enumCategories,
-      designations: this.state.designations.split(','),
+      designations: this.state.designations,
     }
     this.addCard(card).then((res) => {
       this.props.updateCards();
@@ -56,43 +57,65 @@ class AddCard extends Component {
     event.preventDefault();
   }
 
+  handleCheckBox(check){
+    let designations = this.state.designations;
+    designations.push(check);
+    this.setState({
+      designations: designations,
+    });
+  }
+
   render(){
     return (
       <form className="Form" onSubmit={this.handleSubmit}>
         <label className="TextLabel">
           Front:
         </label>
-        <textarea className="TextInput" label="Front of the card" type="text" value={this.state.value} onChange={(e) => this.setState({
+        <textarea className="TextInput" label="Front of the card" type="text" value={this.state.front} onChange={(e) => this.setState({
             front: e.target.value
           })} />
           <label className="TextLabel">
             Back:
           </label>
 
-            <textarea className="TextInput" type="text" value={this.state.value} onChange={(e) => this.setState({
-                back: e.target.value
-              })} />
+          <textarea className="TextInput" type="text" value={this.state.back} onChange={(e) => this.setState({
+              back: e.target.value
+            })} />
             <label className="TextLabel">
               Categories:
             </label>
 
-              <input className="TextInput" type="text" value={this.state.value} onChange={(e) => this.setState({
-                  categories: e.target.value
-                })} />
+            <input className="TextInput" type="text" value={this.state.categories} onChange={(e) => this.setState({
+                categories: e.target.value
+              })} />
               <label className="TextLabel">
                 Designations:
               </label>
-
-                <input className="TextInput" type="text" value={this.state.value} onChange={(e) => this.setState({
-                    designations: e.target.value
-                  })} />
                 <div>{this.state.value}</div>
                 <div className="ButtonContainer">
-                  <input className="Button" type="submit" value="Submit" />
-                </div>
-              </form>
-            );
-          }
+                  <span className="TextLabel">
+                    Form and Function
+                    <input className="Button" type="checkbox" onClick={() => this.handleCheckBox("Form and Function")}/>
+                  </span>
+                  <span className="TextLabel">
+                    Experiences
+                    <input className="Button" type="checkbox"onClick={() => this.handleCheckBox("Experiences")}/>
+                  </span>
+                  <span className="TextLabel">
+                    Systems
+                    <input className="Button" type="checkbox" onClick={() => this.handleCheckBox("Systems")}/>
+                  </span>
+                  <span className="TextLabel">
+                    Paradigms
+                    <input className="Button" type="checkbox" onClick={() => this.handleCheckBox("Paradigms")}/>
+                  </span>
+                  </div>
+                  <div className="ButtonContainer">
+                    <input className="Button" type="submit" value="Submit" />
+                  </div>
+                </form>
+              );
+            }
 
-        }
-        export default AddCard;
+          }
+          export default AddCard;
