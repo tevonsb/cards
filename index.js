@@ -72,9 +72,11 @@ app.post('/updateCard', async (req, res) => {
   console.log(req.body.card);
   if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
     additionalCard = req.body.card;
+    console.log(req.body.card);
     res.status(200).send();
   } else {
     console.log('Getting into the else');
+    console.log(card);
     let card = req.body.card;
     try {
       pool.query('UPDATE cardsjson SET card =\''+JSON.stringify(card)+'\' WHERE id = \''+card['id']+'\'').catch((err) => {
