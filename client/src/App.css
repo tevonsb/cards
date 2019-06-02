@@ -68,6 +68,35 @@
   left: 10%;
 }
 
+.Form {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  justify-content: space-around;
+}
+
+.TextInput {
+  color: none;
+  background-color: none;
+  border-color: white;
+  border-radius: 5px;
+  font-size: 32px;
+  margin: auto;
+  max-width: 30%;
+  text-align: center;
+}
+
+.TextLabel {
+  color: white;
+  background-color: none;
+  border-color: white;
+  border-radius: 5px;
+  font-size: 32px;
+  margin: auto;
+  max-width: 30%;
+  text-align: center;
+}
+
 .Card {
   padding: 3vh;
   color: white;

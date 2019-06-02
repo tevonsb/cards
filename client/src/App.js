@@ -71,17 +71,17 @@ class App extends Component {
   render() {
     if(this.state.addCardActive){
       return (
+        <div className="App">
         <AddCard
           deactivate={() => {this.setState({addCardActive: false})}}
           updateCards={() => {
             loadCards().then((result) => {
-              console.log("RETURNING");
-              console.log(result);
               this.setState({
                 cards: result,
               })
             })
           }}></AddCard>
+      </div>
       );
     }
     if(this.state.cardsActive){

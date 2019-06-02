@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 class AddCard extends Component {
   constructor(props){
@@ -57,36 +58,41 @@ class AddCard extends Component {
 
   render(){
     return (
-      <form onSubmit={this.handleSubmit}>
-      <label>
-      Front:
-      <input type="text" value={this.state.value} onChange={(e) => this.setState({
-        front: e.target.value
-      })} />
-      </label>
-      <label>
-      Back:
-      <input type="text" value={this.state.value} onChange={(e) => this.setState({
-        back: e.target.value
-      })} />
-      </label>
-      <label>
-      Categories:
-      <input type="text" value={this.state.value} onChange={(e) => this.setState({
-        categories: e.target.value
-      })} />
-      </label>
-      <label>
-      Designations:
-      <input type="text" value={this.state.value} onChange={(e) => this.setState({
-        designations: e.target.value
-      })} />
-      </label>
-      <div>{this.state.value}</div>
-      <input type="submit" value="Submit" />
-      </form>
-    );
-  }
+      <form className="Form" onSubmit={this.handleSubmit}>
+        <label className="TextLabel">
+          Front:
+        </label>
+        <textarea className="TextInput" label="Front of the card" type="text" value={this.state.value} onChange={(e) => this.setState({
+            front: e.target.value
+          })} />
+          <label className="TextLabel">
+            Back:
+          </label>
 
-}
-export default AddCard;
+            <textarea className="TextInput" type="text" value={this.state.value} onChange={(e) => this.setState({
+                back: e.target.value
+              })} />
+            <label className="TextLabel">
+              Categories:
+            </label>
+
+              <input className="TextInput" type="text" value={this.state.value} onChange={(e) => this.setState({
+                  categories: e.target.value
+                })} />
+              <label className="TextLabel">
+                Designations:
+              </label>
+
+                <input className="TextInput" type="text" value={this.state.value} onChange={(e) => this.setState({
+                    designations: e.target.value
+                  })} />
+                <div>{this.state.value}</div>
+                <div className="ButtonContainer">
+                  <input className="Button" type="submit" value="Submit" />
+                </div>
+              </form>
+            );
+          }
+
+        }
+        export default AddCard;
