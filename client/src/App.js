@@ -18,7 +18,7 @@ async function loadCards() {
     return res.json();
   }).then((toReturn) => {
     console.log(toReturn);
-    return JSON.parse(toReturn['results']);
+    return toReturn['results'];
   });
 }
 

@@ -44,6 +44,7 @@ app.post('/addCard', async (req, res) => {
   } else {
     console.log('Getting into the else');
     let card = req.body.card;
+    console.log(typeof(card))
     try {
       // pool.query('INSERT INTO cards (front, back, categories, designations) VALUES ('+card['front'] + ',' +card['back']+ ',' +card['categories']+ ',' +card['designations']+ ')').catch((err) => {
       //   console.log('error was');
@@ -53,7 +54,7 @@ app.post('/addCard', async (req, res) => {
       //   console.log('error was');
       //   console.log(err);
       // });
-      pool.query('INSERT INTO cardsjson (card) VALUES ( \''+card+'\')').catch((err) => {
+      pool.query('INSERT INTO cardsjson (card) VALUES ( \''+JSON.stringify(card)+'\')').catch((err) => {
         console.log('error was');
         console.log(err);
       });
