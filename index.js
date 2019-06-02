@@ -24,7 +24,7 @@ app.get('/db', async (req, res) => {
   } else {
     try {
       const client = await pool.connect()
-      const result = await client.query('SELECT * FROM cards');
+      const result = await client.query('SELECT * FROM jsoncards');
       const results = { 'results': (result) ? result.rows : null};
       res.json(results);
       client.release();
@@ -53,7 +53,7 @@ app.post('/addCard', async (req, res) => {
       //   console.log('error was');
       //   console.log(err);
       // });
-      pool.query('INSERT INTO cardsjson VALUES (generate_uuid_v4(),'+ '\'+json.stringify(card)\''+')').catch((err) => {
+      pool.query('INSERT INTO cardsjson (card) VALUES ('+ '\'+json.stringify(card)\''+')').catch((err) => {
         console.log('error was');
         console.log(err);
       });
