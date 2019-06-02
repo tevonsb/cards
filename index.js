@@ -8,9 +8,9 @@ const pool = new Pool({
 });
 
 const app = express();
-let additionalCard = {"id":null,"front":"test front local","back":"test back local","categories":["categories"],"designations":["designations"]};
+let additionalCard = {"id":null,"front":"test front local","back":"test back local","categories":{"categories": 0, "second category": 1, "third": 1},"designations":["designations"]};
 
-let additionalCard2 = {"id":null,"front":"test front local Two","back":"test back local Two","categories":["categories"],"designations":["designations"]};
+let additionalCard2 = {"id":null,"front":"test front local Two","back":"test back local Two","categories":{"categories": 0, "second category": 1, "third": 1},"designations":["designations"]};
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -20,7 +20,7 @@ app.use(express.json());
 app.get('/db', async (req, res) => {
   console.log(process.env.environment);
   if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
-    res.json({"results":[JSON.stringify(additionalCard), JSON.stringify(additionalCard2)]});
+    res.json({"results":[{card:JSON.stringify(additionalCard)}, {card:JSON.stringify(additionalCard2)}]});
   } else {
     try {
       const client = await pool.connect()
@@ -55,6 +55,29 @@ app.post('/addCard', async (req, res) => {
       //   console.log(err);
       // });
       pool.query('INSERT INTO cardsjson (card) VALUES ( \''+JSON.stringify(card)+'\')').catch((err) => {
+        console.log('error was');
+        console.log(err);
+      });
+      res.status(200).send();
+    } catch(err){
+      console.log('catching error in catch statement.')
+      console.log(error);
+      res.status(200).send(error);
+    }
+  }
+});
+
+app.post('/updateCard', async (req, res) => {
+  console.log('Called update card with');
+  console.log(req.body.card);
+  if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
+    additionalCard = req.body.card;
+    res.status(200).send();
+  } else {
+    console.log('Getting into the else');
+    let card = req.body.card;
+    try {
+      pool.query('UPDATE cardsjson SET card =\''+JSON.stringify(card)+'\' WHERE id = \''+card.id+'\'').catch((err) => {
         console.log('error was');
         console.log(err);
       });

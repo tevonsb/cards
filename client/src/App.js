@@ -87,7 +87,7 @@ class App extends Component {
         <div className="App">
           <button className="Button" onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
           <div className="Container">
-            <RenderCards cards={this.state.cards}></RenderCards>
+            <RenderCards cards={this.state.cards} goBack={()=> this.setState({cardsActive: false})}></RenderCards>
           </div>
         </div>
       )

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
 class AddCard extends Component {
   constructor(props){
@@ -25,7 +26,7 @@ class AddCard extends Component {
       body: JSON.stringify({
         card: card,
       })
-    })
+    });
   }
 
   handleChange(event) {
@@ -33,10 +34,14 @@ class AddCard extends Component {
   }
 
   handleSubmit(event) {
+    let enumCategories = {};
+    _.map(this.state.categories.split(','), (cat) => {
+      enumCategories[cat] = 0;
+    });
     let card = {
       front: this.state.front,
       back: this.state.back,
-      categories: this.state.categories.split(','),
+      categories: enumCategories,
       designations: this.state.designations.split(','),
     }
     this.addCard(card).then((res) => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import _ from 'lodash';
 
 class RenderCards extends Component {
   constructor(props){
@@ -10,7 +10,8 @@ class RenderCards extends Component {
     }
     this.selectCard = this.selectCard.bind(this);
     this.nextCard = this.nextCard.bind(this);
-    console.log(this.props.cards);
+    this.getCategories = this.getCategories.bind(this);
+    this.handleCategoryClick = this.handleCategoryClick.bind(this);
   }
 
   selectCard(){
@@ -26,22 +27,55 @@ class RenderCards extends Component {
   }
 
   getCategories(){
-    
+    console.log('categories');
+    console.log(this.state.card.categories);
+    return _.map(Object.keys(this.state.card.categories), (category) => {
+      return (<button
+        onClick={(e) => this.handleCategoryClick(e, category)}
+        className="Category Button"
+        key={category}>
+        {category} {this.state.card.categories[category]}
+      </button>);
+    });
+  }
+
+  handleCategoryClick(e, category){
+    e.stopPropagation()
+    let card = this.state.card;
+    card.categories[category] += 1;
+    this.setState({
+      card: card,
+    });
+    fetch('/updateCard', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        card: card,
+      })
+    }).catch((err)=> {
+      console.log('Error updating the database');
+    });
   }
 
   render(){
     return (
       <div>
-      <div className="CardContainer">
-      <div className="Card"
-      onClick={this.selectCard}
-      >{this.state.card[this.state.active]}
-      </div>
-      <div className="CategoriesContainer">
-        {this.getCategories()}
-      </div>
-      </div>
-      <button className="NextButton" onClick={this.nextCard}>Next Card</button>
+        <div className="CardContainer">
+          <div className="Card"
+            onClick={this.selectCard}
+            >{this.state.card[this.state.active]}
+            <div className="CategoriesContainer">
+              {this.getCategories()}
+            </div>
+          </div>
+          <div className="CategoriesContainer">
+          </div>
+        </div>
+        <button className="NextButton Button" onClick={this.nextCard}>Next Card</button>
+        <button className="BackButton Button" onClick={this.props.goBack}>Back</button>
       </div>
     )
   }
