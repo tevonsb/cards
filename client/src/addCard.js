@@ -67,6 +67,7 @@ class AddCard extends Component {
 
   render(){
     return (
+      <div>
       <form className="Form" onSubmit={this.handleSubmit}>
         <label className="TextLabel">
           Front:
@@ -114,6 +115,8 @@ class AddCard extends Component {
                     <input className="Button" type="submit" value="Submit" />
                   </div>
                 </form>
+                <button className="BackButton Button" onClick={this.props.deactivate}>Back</button>
+                </div>
               );
             }
 
