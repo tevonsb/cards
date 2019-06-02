@@ -9,7 +9,7 @@ import _ from 'lodash';
 const title = "Black and White Cards";
 
 
-const description = ["The purpose of these cards is to jog the creative mindset. Sometimes we get stuck in the way we think about thing, the hope is that in considering something tangential, we get a different view of the problem at home. These were developed from interviews during the Stanford class Beyond Pink and Blue, and thus have a specific focus on gender in tech."]
+const description = ["The purpose of these cards is to jog the creative mindset. Sometimes we get stuck in the way we think about things. The hope is that in considering something tangential, we get a different view of the problem at home. These cards were developed from interviews during the Stanford class Beyond Pink and Blue, and thus have a specific focus on gender in tech."]
 
 async function loadCards() {
   console.log('loading cards...');
@@ -41,6 +41,7 @@ class App extends Component {
       counter: 0,
       card: cards[Math.floor(Math.random() * cards.length)],
       addCardActive: false,
+      selectedDesignation: "All",
     }
     // this.handleClick = this.handleClick.bind(this);
   }
@@ -85,11 +86,17 @@ class App extends Component {
       );
     }
     if(this.state.cardsActive){
+      let cards = _.filter(this.state.cards, (card) => {
+        return _.includes(card.designations, this.state.selectedDesignation);
+      });
+      if(this.state.selectedDesignation === "All"){
+        cards = this.state.cards;
+      }
       return (
         <div className="App">
           <button className="Button" onClick={()=> this.setState({addCardActive: true})}>Add Card</button>
           <div className="Container">
-            <RenderCards cards={this.state.cards} goBack={()=> this.setState({cardsActive: false})}></RenderCards>
+            <RenderCards cards={cards} goBack={()=> this.setState({cardsActive: false, selectedDesignation: "All"})}></RenderCards>
           </div>
         </div>
       )
@@ -106,7 +113,11 @@ class App extends Component {
             {this.getCard()}
           </div>
           <div className="ButtonContainer">
-            <button className="Button" onClick={() => this.setState({cardsActive: true,})}>The Cards</button>
+            <button className="Button" onClick={() => this.setState({cardsActive: true,selectedDesignation: "All"})}>All Cards</button>
+            <button className="Button" onClick={() => this.setState({cardsActive: true,selectedDesignation: "Form and Function"})}>Form and Function</button>
+            <button className="Button" onClick={() => this.setState({cardsActive: true,selectedDesignation: "Experiences"})}>Experiences</button>
+            <button className="Button" onClick={() => this.setState({cardsActive: true,selectedDesignation: "Systems"})}>Systems</button>
+            <button className="Button" onClick={() => this.setState({cardsActive: true,selectedDesignation: "Paradigms"})}>Paradigms</button>
           </div>
         </div>
       </div>

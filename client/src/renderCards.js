@@ -8,6 +8,13 @@ class RenderCards extends Component {
       card: this.props.cards[Math.floor(Math.random() * this.props.cards.length)],
       active: 'front'
     }
+    if(this.props.cards.length === 0){
+      this.state.card = {
+        front: "There are no cards in this category yet. Add one?",
+        back:"There are no cards in this category yet. Add one?",
+        categories: [],
+      };
+    }
     this.selectCard = this.selectCard.bind(this);
     this.nextCard = this.nextCard.bind(this);
     this.getCategories = this.getCategories.bind(this);
