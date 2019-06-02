@@ -87,7 +87,7 @@ class RenderCards extends Component {
           </div>
         </div>
         <button className="NextButton Button" onClick={this.nextCard}>Next Card</button>
-        <button className="BackButton Button" onClick={this.props.deactivate}>Back</button>
+        <button className="BackButton Button" onClick={this.props.goBack}>Back</button>
       </div>
     )
   }
