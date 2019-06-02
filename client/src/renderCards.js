@@ -25,6 +25,10 @@ class RenderCards extends Component {
     });
   }
 
+  getCategories(){
+    
+  }
+
   render(){
     return (
       <div>
@@ -32,6 +36,9 @@ class RenderCards extends Component {
       <div className="Card"
       onClick={this.selectCard}
       >{this.state.card[this.state.active]}
+      </div>
+      <div className="CategoriesContainer">
+        {this.getCategories()}
       </div>
       </div>
       <button className="NextButton" onClick={this.nextCard}>Next Card</button>

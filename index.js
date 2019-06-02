@@ -20,7 +20,7 @@ app.use(express.json());
 app.get('/db', async (req, res) => {
   console.log(process.env.environment);
   if(process.env.ENVIRONMENT == 'DEVELOPMENT'){
-    res.json({"results":[additionalCard, additionalCard2]});
+    res.json({"results":[JSON.stringify(additionalCard), JSON.stringify(additionalCard2)]});
   } else {
     try {
       const client = await pool.connect()

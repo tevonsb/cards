@@ -37,7 +37,7 @@ class AddCard extends Component {
       front: this.state.front,
       back: this.state.back,
       categories: this.state.categories.split(','),
-      designations: this.state.categories.split(','),
+      designations: this.state.designations.split(','),
     }
     this.addCard(card).then((res) => {
       this.props.updateCards();

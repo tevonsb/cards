@@ -4,6 +4,7 @@ import './App.css';
 import { cards } from './cards.js';
 import AddCard from './addCard.js';
 import RenderCards from './renderCards';
+import _ from 'lodash';
 
 const title = "Black and White Cards";
 
@@ -18,7 +19,12 @@ async function loadCards() {
     return res.json();
   }).then((toReturn) => {
     console.log(toReturn);
-    return toReturn['results'];
+    let cards = _.map(toReturn['results'], (card) => {
+      return JSON.parse(card);
+    });
+    console.log('The returned cards are');
+    console.log(cards);
+    return cards;
   });
 }
 
