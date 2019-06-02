@@ -8,9 +8,9 @@ const pool = new Pool({
 });
 
 const app = express();
-let additionalCard = {"id":null,"front":"test front local","back":"test back local","categories":{"categories": 0, "second category": 1, "third": 1},"designations":["designations"]};
+let additionalCard = {"id":2  ,"front":"test front local","back":"test back local","categories":{"categories": 0, "second category": 1, "third": 1},"designations":["designations"]};
 
-let additionalCard2 = {"id":null,"front":"test front local Two","back":"test back local Two","categories":{"categories": 0, "second category": 1, "third": 1},"designations":["designations"]};
+let additionalCard2 = {"id":1,"front":"test front local Two","back":"test back local Two","categories":{"categories": 0, "second category": 1, "third": 1},"designations":["designations"]};
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));

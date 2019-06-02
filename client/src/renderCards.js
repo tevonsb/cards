@@ -49,6 +49,8 @@ class RenderCards extends Component {
     this.setState({
       card: card,
     });
+    console.log('IN handleCategoryClick');
+    console.log(card);
     fetch('/updateCard', {
       method: 'POST',
       headers: {

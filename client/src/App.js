@@ -20,7 +20,9 @@ async function loadCards() {
   }).then((toReturn) => {
     console.log(toReturn);
     let cards = _.map(toReturn['results'], (card) => {
-      return JSON.parse(card['card']);
+      let toReturn = JSON.parse(card['card']);
+      toReturn.id = card['id'];
+      return toReturn;
     });
     console.log('The returned cards are');
     console.log(cards);
